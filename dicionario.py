@@ -18,7 +18,7 @@ mensagens_apoio = [
 
 # Configuração de cores para realçar emoções
 cores = {
-    "Muito Positivo": "#D4EDDA",  # Verde claro
+    "Muito Positivo": "#DFF6DD",  # Verde claro
     "Positivo": "#C3E6CB",
     "Neutro": "#FFF3CD",  # Amarelo claro
     "Negativo": "#F8D7DA",  # Vermelho claro
@@ -71,7 +71,8 @@ st.markdown(
             font-size: 24px;
             font-weight: bold;
             margin-top: 20px;
-            animation: fadeIn 1.5s;
+            background-color: white;
+            animation: fadeIn 1.5s ease-in-out;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -97,9 +98,11 @@ if st.sidebar.button("🔎 Analisar Sentimento"):
         resultado, emoji = analisar_sentimento(frase_usuario)
         st.session_state.historico.append((frase_usuario, resultado, emoji))
 
-        st.markdown(
-            f"<div class='result-box' style='background-color: {cores.get(resultado, '#ffffff')};'>{emoji} {resultado}</div>",
-            unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class='result-box' style='background-color: {cores.get(resultado, '#ffffff')};'>
+            {emoji} {resultado}
+        </div>
+        """, unsafe_allow_html=True)
 
         # Se o sentimento for negativo, oferecer ajuda emocional
         if "Negativo" in resultado:
