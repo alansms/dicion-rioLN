@@ -8,7 +8,7 @@ def analisar_sentimento(frase):
 
     # Verifica se a frase não está vazia
     if not frase.strip():
-        return "Por favor, insira uma frase válida."
+        return "Por favor, insira uma frase válida.", "🧐"
 
     # Remover pontuação e converter para minúsculas
     frase = frase.translate(str.maketrans('', '', string.punctuation)).lower()
@@ -22,12 +22,11 @@ def analisar_sentimento(frase):
 
     # Classificação do sentimento
     if contagem_positiva > contagem_negativa:
-        return "😀 Sentimento Positivo"
+        return "Sentimento Positivo", "😀"
     elif contagem_negativa > contagem_positiva:
-        return "😞 Sentimento Negativo"
+        return "Sentimento Negativo", "😞"
     else:
-        return "😐 Sentimento Neutro"
-
+        return "Sentimento Neutro", "😐"
 
 # Interface Web com Streamlit
 st.title("🔍 Analisador de Sentimento")
@@ -38,6 +37,6 @@ frase_usuario = st.text_input("Digite sua frase aqui:")
 
 # Analisar sentimento ao clicar no botão
 if st.button("🔎 Analisar Sentimento"):
-    resultado = analisar_sentimento(frase_usuario)
+    resultado, emoji = analisar_sentimento(frase_usuario)
     st.subheader("Resultado:")
-    st.write(resultado)
+    st.write(f"{emoji} {resultado}")
