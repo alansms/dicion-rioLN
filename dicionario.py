@@ -1,5 +1,9 @@
 import streamlit as st
+<<<<<<< HEAD
 import re
+=======
+import string
+>>>>>>> dc37a4c (Atualizando dicionario.py)
 
 def analisar_sentimento(frase):
     # Dicionário de palavras positivas e negativas
@@ -11,7 +15,11 @@ def analisar_sentimento(frase):
         return "Por favor, insira uma frase válida.", "🧐"
 
     # Remover pontuação e converter para minúsculas
+<<<<<<< HEAD
     frase = re.sub(r'[^\w\s]', '', frase.lower())
+=======
+    frase = frase.translate(str.maketrans('', '', string.punctuation)).lower()
+>>>>>>> dc37a4c (Atualizando dicionario.py)
 
     # Separar a frase em palavras
     palavras = frase.split()
@@ -37,9 +45,15 @@ frase_usuario = st.text_input("Digite sua frase aqui:")
 
 # Analisar sentimento ao clicar no botão
 if st.button("🔎 Analisar Sentimento"):
+<<<<<<< HEAD
     if frase_usuario.strip():  # Garante que a entrada não está vazia
         resultado, emoji = analisar_sentimento(frase_usuario)
         st.subheader("Resultado:")
         st.markdown(f"### {emoji} {resultado}")  # Melhor exibição da resposta
     else:
         st.warning("⚠️ Digite um texto para análise.")  # Exibe alerta visual no Streamlit
+=======
+    resultado, emoji = analisar_sentimento(frase_usuario)
+    st.subheader("Resultado:")
+    st.write(f"{emoji} {resultado}")
+>>>>>>> dc37a4c (Atualizando dicionario.py)
