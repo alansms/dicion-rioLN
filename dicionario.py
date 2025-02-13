@@ -1,13 +1,20 @@
 import streamlit as st
-
+import string
 
 def analisar_sentimento(frase):
     # Dicionário de palavras positivas e negativas
     palavras_positivas = {"bom", "ótimo", "excelente", "maravilhoso", "feliz", "alegria", "positivo", "sucesso"}
     palavras_negativas = {"ruim", "péssimo", "horrível", "triste", "fracasso", "negativo", "chato", "desastroso"}
 
+    # Verifica se a frase não está vazia
+    if not frase.strip():
+        return "Por favor, insira uma frase válida."
+
+    # Remover pontuação e converter para minúsculas
+    frase = frase.translate(str.maketrans('', '', string.punctuation)).lower()
+
     # Separar a frase em palavras
-    palavras = frase.lower().split()
+    palavras = frase.split()
 
     # Contar palavras positivas e negativas
     contagem_positiva = sum(1 for palavra in palavras if palavra in palavras_positivas)
@@ -15,19 +22,22 @@ def analisar_sentimento(frase):
 
     # Classificação do sentimento
     if contagem_positiva > contagem_negativa:
-        return "Sentimento Positivo"
+        return "😀 Sentimento Positivo"
     elif contagem_negativa > contagem_positiva:
-        return "Sentimento Negativo"
+        return "😞 Sentimento Negativo"
     else:
-        return "Sentimento Neutro"
+        return "😐 Sentimento Neutro"
 
 
 # Interface Web com Streamlit
-st.title("Analisador de Sentimento")
+st.title("🔍 Analisador de Sentimento")
 st.write("Digite uma frase para analisar seu sentimento.")
 
-frase_usuario = st.text_input("Frase:")
+# Entrada do usuário
+frase_usuario = st.text_input("Digite sua frase aqui:")
 
-if st.button("Analisar Sentimento"):
+# Analisar sentimento ao clicar no botão
+if st.button("🔎 Analisar Sentimento"):
     resultado = analisar_sentimento(frase_usuario)
-    st.write(f"Classificação: {resultado}")
+    st.subheader("Resultado:")
+    st.write(resultado)
