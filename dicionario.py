@@ -3,11 +3,13 @@ import re
 import random
 import urllib.parse
 
-# Dicionário de palavras positivas e negativas
+# Dicionário de palavras positivas, negativas e emoções específicas
 palavras_positivas = {"bom", "ótimo", "excelente", "maravilhoso", "feliz", "alegria", "positivo", "sucesso", "incrível",
                       "fantástico", "adorável"}
 palavras_negativas = {"ruim", "péssimo", "horrível", "triste", "fracasso", "negativo", "chato", "desastroso",
                       "deprimente", "lamentável"}
+palavras_raiva = {"ódio", "raiva", "furioso", "irritado", "revoltado"}
+palavras_medo = {"medo", "assustado", "pavor", "ameaça", "desesperado"}
 
 # Mensagens motivacionais para sentimentos negativos
 mensagens_apoio = [
@@ -22,7 +24,9 @@ cores = {
     "Positivo": "#C3E6CB",
     "Neutro": "#FFF3CD",  # Amarelo claro
     "Negativo": "#F8D7DA",  # Vermelho claro
-    "Muito Negativo": "#F5C6CB"
+    "Muito Negativo": "#F5C6CB",
+    "Raiva": "#FF5733",  # Laranja escuro
+    "Medo": "#6A5ACD"  # Azul escuro
 }
 
 
@@ -35,8 +39,14 @@ def analisar_sentimento(frase):
 
     contagem_positiva = sum(1 for palavra in palavras if palavra in palavras_positivas)
     contagem_negativa = sum(1 for palavra in palavras if palavra in palavras_negativas)
+    contagem_raiva = sum(1 for palavra in palavras if palavra in palavras_raiva)
+    contagem_medo = sum(1 for palavra in palavras if palavra in palavras_medo)
 
-    if contagem_positiva >= 3:
+    if contagem_raiva > 1:
+        return "Raiva", "🔥"
+    elif contagem_medo > 1:
+        return "Medo", "😨"
+    elif contagem_positiva >= 3:
         return "Muito Positivo", "😍"
     elif contagem_positiva > contagem_negativa:
         return "Positivo", "🙂"
@@ -65,18 +75,14 @@ st.markdown(
             color: #666;
         }
         .result-box {
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             text-align: center;
             font-size: 24px;
             font-weight: bold;
-            margin-top: 20px;
-            background-color: white;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            width: 60%;
+            margin: auto;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
         }
     </style>
     """,
@@ -99,20 +105,26 @@ if st.sidebar.button("🔎 Analisar Sentimento"):
         st.session_state.historico.append((frase_usuario, resultado, emoji))
 
         st.markdown(f"""
-        <div class='result-box' style='background-color: {cores.get(resultado, '#ffffff')};'>
+        <div class='result-box' style='background-color: {cores.get(resultado, '#ffffff')};
+             color: {'#000' if resultado in ['Muito Positivo', 'Neutro'] else '#fff'};'>
             {emoji} {resultado}
         </div>
         """, unsafe_allow_html=True)
 
         # Se o sentimento for negativo, oferecer ajuda emocional
-        if "Negativo" in resultado:
+        if "Negativo" in resultado or resultado in ["Raiva", "Medo"]:
             st.warning(
                 "💙 Se você estiver se sentindo mal, saiba que você não está sozinho. Procure apoio de amigos, familiares ou profissionais. Você pode entrar em contato com serviços de apoio emocional como o CVV (Centro de Valorização da Vida) pelo telefone 188 ou pelo site [cvv.org.br](https://www.cvv.org.br/). 💙")
             st.info(random.choice(mensagens_apoio))
 
-        # Gerar link para compartilhamento
-        url_compartilhar = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(f'Analisei meu sentimento e deu: {resultado}! 😀 #SentimentoAI')}"
-        st.markdown(f"[📢 Compartilhe no Twitter]({url_compartilhar})", unsafe_allow_html=True)
+        # Modo de Aprendizagem - permitir feedback do usuário
+        if st.button("Isso está errado!"):
+            novo_sentimento = st.selectbox("Qual seria a emoção correta?",
+                                           ["Raiva", "Medo", "Alegria", "Tristeza", "Outro"])
+            if novo_sentimento:
+                with open("feedback.txt", "a") as f:
+                    f.write(f"{frase_usuario} -> {novo_sentimento}\n")
+                st.success("Obrigado pelo feedback! O modelo aprenderá com isso. 🎯")
 
         # Exibir histórico
         st.subheader("📜 Histórico de Sentimentos")
