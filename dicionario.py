@@ -8,7 +8,7 @@ palavras_positivas = {"bom", "ótimo", "excelente", "maravilhoso", "feliz", "ale
                       "fantástico", "adorável"}
 palavras_negativas = {"ruim", "péssimo", "horrível", "triste", "fracasso", "negativo", "chato", "desastroso",
                       "deprimente", "lamentável"}
-palavras_raiva = {"ódio", "raiva", "furioso", "irritado", "revoltado"}
+palavras_raiva = {"ódio", "raiva", "furioso", "irritado", "revoltado", "explosivo", "agressivo", "furibundo"}
 palavras_medo = {"medo", "assustado", "pavor", "ameaça", "desesperado"}
 
 # Mensagens motivacionais para sentimentos negativos
@@ -42,9 +42,9 @@ def analisar_sentimento(frase):
     contagem_raiva = sum(1 for palavra in palavras if palavra in palavras_raiva)
     contagem_medo = sum(1 for palavra in palavras if palavra in palavras_medo)
 
-    if contagem_raiva > 1:
+    if contagem_raiva > 0:
         return "Raiva", "🔥"
-    elif contagem_medo > 1:
+    elif contagem_medo > 0:
         return "Medo", "😨"
     elif contagem_positiva >= 3:
         return "Muito Positivo", "😍"
