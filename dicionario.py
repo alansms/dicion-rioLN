@@ -1,6 +1,7 @@
 import streamlit as st
 import re  # Mantendo re para limpeza da string
 
+
 def analisar_sentimento(frase):
     # Dicionário de palavras positivas e negativas
     palavras_positivas = {"bom", "ótimo", "excelente", "maravilhoso", "feliz", "alegria", "positivo", "sucesso"}
@@ -28,6 +29,7 @@ def analisar_sentimento(frase):
     else:
         return "Sentimento Neutro", "😐"
 
+
 # Interface Web com Streamlit
 st.title("🔍 Analisador de Sentimento")
 st.write("Digite uma frase para analisar seu sentimento.")
@@ -41,5 +43,10 @@ if st.button("🔎 Analisar Sentimento"):
         resultado, emoji = analisar_sentimento(frase_usuario)
         st.subheader("Resultado:")
         st.markdown(f"### {emoji} {resultado}")  # Melhor exibição da resposta
+
+        # Se o sentimento for negativo, oferecer ajuda emocional
+        if resultado == "Sentimento Negativo":
+            st.warning(
+                "💙 Se você estiver se sentindo mal, saiba que você não está sozinho. Procure apoio de amigos, familiares ou profissionais. Você pode entrar em contato com serviços de apoio emocional como o CVV (Centro de Valorização da Vida) pelo telefone 188 ou pelo site [cvv.org.br](https://www.cvv.org.br/). 💙")
     else:
         st.warning("⚠️ Digite um texto para análise.")  # Exibe alerta visual no Streamlit
