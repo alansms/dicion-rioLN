@@ -196,7 +196,7 @@ requests==2.32.3
 rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
 rich==13.8.1
-rpa_getcmd==1.0.2
+rpa-getcmd==1.0.2
 rpds-py==0.20.0
 safetensors==0.4.5
 scikit-learn==1.5.2
