@@ -16,6 +16,15 @@ mensagens_apoio = [
     "🌟 Lembre-se: dias difíceis passam. Você é mais forte do que imagina. 🌟"
 ]
 
+# Configuração de cores para realçar emoções
+cores = {
+    "Muito Positivo": "#D4EDDA",  # Verde claro
+    "Positivo": "#C3E6CB",
+    "Neutro": "#FFF3CD",  # Amarelo claro
+    "Negativo": "#F8D7DA",  # Vermelho claro
+    "Muito Negativo": "#F5C6CB"
+}
+
 
 def analisar_sentimento(frase):
     if not frase.strip():
@@ -40,7 +49,42 @@ def analisar_sentimento(frase):
 
 
 # Interface Web com Streamlit
-st.title("🔍 Analisador de Sentimento")
+st.set_page_config(page_title="Sentimento AI - Seu Detector de Emoções", page_icon="💡", layout="wide")
+
+st.markdown(
+    """
+    <style>
+        .big-title {
+            font-size: 42px;
+            text-align: center;
+            color: #4A90E2;
+        }
+        .sub-title {
+            font-size: 22px;
+            text-align: center;
+            color: #666;
+        }
+        .result-box {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: fadeIn 1.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("<h1 class='big-title'>🔍 Sentimento AI</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub-title'>Seu Detector de Emoções Inteligente 🤖💙</p>", unsafe_allow_html=True)
+
 st.sidebar.title("📝 Entrada de Texto")
 frase_usuario = st.sidebar.text_area("Digite sua frase aqui:")
 
@@ -53,8 +97,9 @@ if st.sidebar.button("🔎 Analisar Sentimento"):
         resultado, emoji = analisar_sentimento(frase_usuario)
         st.session_state.historico.append((frase_usuario, resultado, emoji))
 
-        st.subheader("Resultado:")
-        st.markdown(f"<h2 style='text-align: center; color: blue;'>{emoji} {resultado}</h2>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div class='result-box' style='background-color: {cores.get(resultado, '#ffffff')};'>{emoji} {resultado}</div>",
+            unsafe_allow_html=True)
 
         # Se o sentimento for negativo, oferecer ajuda emocional
         if "Negativo" in resultado:
