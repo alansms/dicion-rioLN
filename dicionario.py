@@ -84,6 +84,13 @@ st.markdown(
             margin: auto;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
         }
+        div.stButton > button {
+            border: 2px solid red;
+            background-color: white;
+            color: red;
+            font-weight: bold;
+            width: 100%;
+        }
     </style>
     """,
     unsafe_allow_html=True
@@ -119,12 +126,11 @@ if st.sidebar.button("🔎 Analisar Sentimento"):
 
         # Modo de Aprendizagem - permitir feedback do usuário
         if st.button("Isso está errado!"):
-            novo_sentimento = st.selectbox("Qual seria a emoção correta?",
-                                           ["Raiva", "Medo", "Alegria", "Tristeza", "Outro"])
+            novo_sentimento = st.text_input("Digite a emoção correta:")
             if novo_sentimento:
                 with open("feedback.txt", "a") as f:
                     f.write(f"{frase_usuario} -> {novo_sentimento}\n")
-                st.success("Obrigado pelo feedback! O modelo aprenderá com isso. 🎯")
+                st.success(f"Obrigado pelo feedback! '{frase_usuario}' será registrado como '{novo_sentimento}'. 🎯")
 
         # Exibir histórico
         st.subheader("📜 Histórico de Sentimentos")
